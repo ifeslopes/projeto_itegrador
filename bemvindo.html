@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Boas-vindas</title>
+    <!-- Adicionando o CSS do Tailwind -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Estilos adicionais */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="w-full max-w-md">
+        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <h2 class="text-2xl font-bold mb-4">Bem-vindo(a)!</h2>
+
+            <!-- Exibição dos dados do localStorage -->
+            <div>
+                <h3 class="text-lg font-bold mb-2">Dados do Cadastro de Gastos:</h3>
+
+                <!-- Exibição do saldo total -->
+                <p class="mb-2">
+                    Saldo Total:
+                    <span id="saldoTotal" class="font-bold"></span>
+                </p>
+
+                <!-- Exibição dos gastos -->
+                <div>
+                    <h4 class="font-bold">Gastos:</h4>
+                    <ul id="listaGastos" class="list-disc pl-6"></ul>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between mt-4">
+                <button id="novoCadastro"
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    type="button">
+                    Novo Cadastro
+                </button>
+                <button id="gerarRelatorio"
+                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    type="button">
+                    Gerar Relatório
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Adicionando o JavaScript -->
+    <script>
+        // Função para formatar o valor em moeda
+        function formatarMoeda(valor) {
+            return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        // Função para exibir os dados do localStorage
+        function exibirDadosLocalStorage() {
+            var saldoTotal = localStorage.getItem('saldoTotal');
+            var listaGastos = JSON.parse(localStorage.getItem('listaGastos')) || [];
+
+            // Exibe o saldo total
+            if (saldoTotal) {
+                document.getElementById('saldoTotal').textContent = formatarMoeda(parseFloat(saldoTotal));
+            }
+
+            // Exibe a lista de gastos
+            var listaGastosElement = document.getElementById('listaGastos');
+            listaGastosElement.innerHTML = '';
+
+            listaGastos.forEach(function (gasto) {
+                var listItem = document.createElement('li');
+                listItem.textContent = `${gasto.tipo}: ${gasto.nome} - ${formatarMoeda(gasto.valor)}`;
+                listaGastosElement.appendChild(listItem);
+            });
+        }
+
+        // Função para limpar o localStorage
+        function limparLocalStorage() {
+            localStorage.removeItem('saldoTotal');
+            localStorage.removeItem('listaGastos');
+            alert('Dados removidos do localStorage!');
+            exibirDadosLocalStorage();
+        }
+
+        // Adicionando um listener para o botão de novo cadastro
+        document.getElementById('novoCadastro').addEventListener('click', function () {
+            window.location.href = 'cadastro_gasto.html';
+        });
+
+        // Adicionando um listener para o botão de gerar relatório
+        document.getElementById('gerarRelatorio').addEventListener('click', function () {
+            // Implemente a lógica para gerar o relatório conforme suas necessidades
+            alert('Relatório gerado!');
+        });
+
+        // Exibe os dados do localStorage ao carregar a página
+        exibirDadosLocalStorage();
+    </script>
+</body>
+
+</html>

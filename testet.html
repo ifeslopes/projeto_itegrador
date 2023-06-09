@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Cadastro</title>
+    <title>Página de Login</title>
     <!-- Adicionando o CSS do Tailwind -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
     <style>
@@ -20,15 +20,7 @@
 
 <body>
     <div class="w-full max-w-xs">
-        <form id="cadastroForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="nome">
-                    Nome
-                </label>
-                <input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="nome" type="text" placeholder="Digite seu nome">
-            </div>
+        <form id="loginForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
                     Email
@@ -36,14 +28,6 @@
                 <input
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     id="email" type="email" placeholder="Digite seu email">
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="telefone">
-                    Telefone
-                </label>
-                <input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="telefone" type="tel" placeholder="Digite seu telefone">
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="senha">
@@ -54,19 +38,45 @@
                     id="senha" type="password" placeholder="Digite sua senha">
             </div>
             <div class="flex items-center justify-between">
-                <button id="cadastrar"
+                <button id="entrar"
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     type="button">
-                    Cadastrar
+                    Entrar
                 </button>
-                <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="login.html">Já
-                    tem uma conta? Faça login</a>
+                <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+                    href="#">Esqueceu a senha?</a>
             </div>
         </form>
     </div>
 
     <!-- Adicionando o JavaScript -->
- <script src="javascript.js"></script>
+    <script>
+    // Função para realizar o login
+    function realizarLogin() {
+      var email = document.getElementById('email').value;
+      var senha = document.getElementById('senha').value;
+
+      // Aqui você pode fazer a validação dos dados de login
+      // Comparar com os dados cadastrados anteriormente, verificar autenticidade, etc.
+
+      // Exemplo de validação simples:
+      var cadastroEmail = localStorage.getItem('email');
+      var cadastroSenha = localStorage.getItem('senha');
+
+      if (email === cadastroEmail && senha === cadastroSenha) {
+        alert('Login realizado com sucesso!');
+      } else {
+        alert('Email ou senha inválidos!');
+      }
+
+      // Limpando os campos do formulário
+      document.getElementById('email').value = '';
+      document.getElementById('senha').value = '';
+    }
+
+    // Adicionando um listener para o botão de login
+    document.getElementById('entrar').addEventListener('click', realizarLogin);
+    </script>
 </body>
 
 </html>

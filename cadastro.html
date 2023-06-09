@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Controle de Gastos</title>
+    <!-- Adicionando o CSS do Tailwind -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Estilos adicionais */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="w-full max-w-xs">
+        <form id="cadastroForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <h2 class="text-2xl font-bold mb-4">Cadastro de Controle de Gastos</h2>
+
+            <!-- Campo de saldo total (aparece apenas se não houver um valor no localStorage) -->
+            <div class="mb-4" id="saldoTotalDiv" style="display: none;">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="saldoTotal">
+                    Saldo Total
+                </label>
+                <input
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="saldoTotal" type="number" placeholder="Digite o saldo total">
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="tipoGasto">
+                    Tipo de Gasto
+                </label>
+                <select
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="tipoGasto">
+                    <option value="gastoFixo">Gasto Fixo</option>
+                    <option value="gastoAleatorio">Gasto Aleatório</option>
+                    <option value="gastoEmergencia">Gasto de Emergência</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="nomeGasto">
+                    Nome do Gasto
+                </label>
+                <input
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="nomeGasto" type="text" placeholder="Digite o nome do gasto">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="valorGasto">
+                    Valor do Gasto
+                </label>
+                <input
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="valorGasto" type="number" placeholder="Digite o valor do gasto">
+            </div>
+            <div class="flex items-center justify-between">
+                <button id="cadastrar"
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    type="button">
+                    Cadastrar
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Adicionando o JavaScript -->
+    <script>
+        // Verifica se há um valor no localStorage para o saldo total
+        var saldoTotal = localStorage.getItem('saldoTotal');
+        if (!saldoTotal) {
+            document.getElementById('saldoTotalDiv').style.display = 'block';
+        }
+
+        // Função para cadastrar o gasto
+        function cadastrarGasto() {
+            var tipoGasto = document.getElementById('tipoGasto').value;
+            var nomeGasto = document.getElementById('nomeGasto').value;
+            var valorGasto = parseFloat(document.getElementById('valorGasto').value);
+
+            // Verifica se os campos estão preenchidos
+            if (tipoGasto === '' || nomeGasto === '' || isNaN(valorGasto)) {
+                alert('Por favor, preencha todos os campos!');
+                return;
+            }
+
+            // Armazena o gasto no localStorage de forma acumulativa
+            var listaGastos = JSON.parse(localStorage.getItem('listaGastos')) || [];
+            listaGastos.push({ tipo: tipoGasto, nome: nomeGasto, valor: valorGasto });
+            localStorage.setItem('listaGastos', JSON.stringify(listaGastos));
+
+            // Atualiza o saldo total se não houver um valor no localStorage
+            if (!saldoTotal) {
+                saldoTotal = parseFloat(document.getElementById('saldoTotal').value);
+                localStorage.setItem('saldoTotal', saldoTotal);
+            }
+
+            // Subtrai o valor do gasto do saldo total
+            saldoTotal -= valorGasto;
+            localStorage.setItem('saldoTotal', saldoTotal);
+
+            // Limpa os campos do formulário
+            document.getElementById('tipoGasto').value = '';
+            document.getElementById('nomeGasto').value = '';
+            document.getElementById('valorGasto').value = '';
+
+            alert('Gasto cadastrado com sucesso!');
+        }
+
+        // Adiciona um listener para o botão de cadastrar
+        document.getElementById('cadastrar').addEventListener('click', cadastrarGasto);
+    </script>
+</body>
+
+</html>
