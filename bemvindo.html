@@ -10,66 +10,157 @@
     <style>
         /* Estilos adicionais */
         body {
+            background-color: #f3f4f6;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .saldo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .total-gasto {
+            font-size: 18px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .total-gasto.negativo {
+            color: red;
+        }
+
+        .gastos {
+            margin-top: 10px;
+        }
+
+        .gasto-item {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .gasto-nome {
+            font-weight: bold;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .button {
+            flex: 1;
+            margin-right: 10px;
         }
     </style>
 </head>
 
 <body>
-    <div class="w-full max-w-md">
-        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <h2 class="text-2xl font-bold mb-4">Bem-vindo(a)!</h2>
+    <div class="container">
+        <div class="card">
+            <h2 class="title">Bem-vindo(a)!</h2>
 
             <!-- Exibição dos dados do localStorage -->
             <div>
-                <h3 class="text-lg font-bold mb-2">Dados do Cadastro de Gastos:</h3>
+                <h3 class="subtitle">Dados do Cadastro de Gastos:</h3>
 
                 <!-- Exibição do saldo total -->
-                <p class="mb-2">
+                <p>
                     Saldo Total:
-                    <span id="saldoTotal" class="font-bold"></span>
+                    <span id="saldoTotal" class="saldo"></span>
+                </p>
+
+                <!-- Exibição do total gasto -->
+                <p>
+                    Total Gasto:
+                    <span id="totalGasto" class="total-gasto"></span>
                 </p>
 
                 <!-- Exibição dos gastos -->
-                <div>
-                    <h4 class="font-bold">Gastos:</h4>
-                    <ul id="listaGastos" class="list-disc pl-6"></ul>
+                <div class="gastos">
+                    <h4 class="subtitle">Gastos:</h4>
+                    <ul id="listaGastos"></ul>
                 </div>
             </div>
 
-            <div class="flex items-center justify-between mt-4">
+            <div class="button-container">
                 <button id="novoCadastro"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    class="button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     type="button">
-                    Novo Cadastro
+                    Novo Gasto
                 </button>
                 <button id="gerarRelatorio"
-                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    type="button">
-                    Gerar Relatório
-                </button>
+                class="button bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                type="button">
+                Gerar Relatório
+            </button>
+            <button id="sair"
+                class="button bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                type="button">
+                Sair
+            </button>
             </div>
         </div>
     </div>
 
     <!-- Adicionando o JavaScript -->
     <script>
-        // Função para formatar o valor em moeda
+        // Função para formatar o valor monetário
         function formatarMoeda(valor) {
             return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         }
 
         // Função para exibir os dados do localStorage
         function exibirDadosLocalStorage() {
-            var saldoTotal = localStorage.getItem('saldoTotal');
+            var saldoTotal = parseFloat(localStorage.getItem('saldoTotal'));
             var listaGastos = JSON.parse(localStorage.getItem('listaGastos')) || [];
 
             // Exibe o saldo total
             if (saldoTotal) {
-                document.getElementById('saldoTotal').textContent = formatarMoeda(parseFloat(saldoTotal));
+                document.getElementById('saldoTotal').textContent = formatarMoeda(saldoTotal);
+            }
+
+            // Calcula o total gasto
+            var totalGasto = 0;
+            listaGastos.forEach(function (gasto) {
+                totalGasto += gasto.valor;
+            });
+
+            // Exibe o total gasto
+            var totalGastoElement = document.getElementById('totalGasto');
+            totalGastoElement.textContent = formatarMoeda(totalGasto);
+
+            // Aplica estilo negativo se o total gasto for maior que o saldo total
+            if (saldoTotal && totalGasto > saldoTotal) {
+                totalGastoElement.classList.add('negativo');
+            } else {
+                totalGastoElement.classList.remove('negativo');
             }
 
             // Exibe a lista de gastos
@@ -78,28 +169,37 @@
 
             listaGastos.forEach(function (gasto) {
                 var listItem = document.createElement('li');
-                listItem.textContent = `${gasto.tipo}: ${gasto.nome} - ${formatarMoeda(gasto.valor)}`;
+                listItem.className = 'gasto-item';
+
+                var nomeSpan = document.createElement('span');
+                nomeSpan.className = 'gasto-nome';
+                nomeSpan.textContent = `${gasto.nome}:`;
+
+                var valorSpan = document.createElement('span');
+                valorSpan.className = 'gasto-valor';
+                valorSpan.textContent = formatarMoeda(gasto.valor);
+
+                listItem.appendChild(nomeSpan);
+                listItem.appendChild(valorSpan);
                 listaGastosElement.appendChild(listItem);
             });
         }
 
-        // Função para limpar o localStorage
-        function limparLocalStorage() {
-            localStorage.removeItem('saldoTotal');
-            localStorage.removeItem('listaGastos');
-            alert('Dados removidos do localStorage!');
-            exibirDadosLocalStorage();
-        }
-
         // Adicionando um listener para o botão de novo cadastro
         document.getElementById('novoCadastro').addEventListener('click', function () {
-            window.location.href = 'cadastro_gasto.html';
+            window.location.href = 'cadastro.html';
         });
-
+        // Adicionando um listener para o botão de novo cadastro
+        document.getElementById('sair').addEventListener('click', function () {
+            localStorage.clear()
+            window.location.href = 'index.html';
+        });
+        
         // Adicionando um listener para o botão de gerar relatório
         document.getElementById('gerarRelatorio').addEventListener('click', function () {
             // Implemente a lógica para gerar o relatório conforme suas necessidades
-            alert('Relatório gerado!');
+            window.location.href = 'relatorios.html';
+            
         });
 
         // Exibe os dados do localStorage ao carregar a página

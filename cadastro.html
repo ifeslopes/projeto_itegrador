@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Controle de Gastos</title>
+    <title>Página de Boas-vindas</title>
     <!-- Adicionando o CSS do Tailwind -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
     <style>
@@ -13,63 +13,99 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            background-color: #f3f4f6;
+            font-family: 'Roboto', sans-serif;
         }
+
+        .container {
+            max-width: 405px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+            background-color: #4a5568;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        /* ... Resto dos estilos ... */
     </style>
 </head>
 
 <body>
-    <div class="w-full max-w-xs">
-        <form id="cadastroForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <h2 class="text-2xl font-bold mb-4">Cadastro de Controle de Gastos</h2>
+    <div class="container">
+        <div class="logo">
+            <h1>Cadastro de Gastos</h1>
 
-            <!-- Campo de saldo total (aparece apenas se não houver um valor no localStorage) -->
-            <div class="mb-4" id="saldoTotalDiv" style="display: none;">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="saldoTotal">
-                    Saldo Total
-                </label>
-                <input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="saldoTotal" type="number" placeholder="Digite o saldo total">
-            </div>
 
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="tipoGasto">
-                    Tipo de Gasto
-                </label>
-                <select
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="tipoGasto">
-                    <option value="gastoFixo">Gasto Fixo</option>
-                    <option value="gastoAleatorio">Gasto Aleatório</option>
-                    <option value="gastoEmergencia">Gasto de Emergência</option>
-                </select>
+            <div class="card">
+                <div class="w-full max-w-xs">
+                    <form id="cadastroForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                        <h2 class="text-2xl font-bold mb-4"></h2>
+
+                        <!-- Campo de saldo total (aparece apenas se não houver um valor no localStorage) -->
+                        <div class="mb-4" id="saldoTotalDiv" style="display: none;">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="saldoTotal">
+                                Saldo Total
+                            </label>
+                            <input
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                id="saldoTotal" type="number" placeholder="Digite o saldo total">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="tipoGasto">
+                                Tipo de Gasto
+                            </label>
+                            <select
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                id="tipoGasto">
+                                <option value="gastoFixo">Gasto Fixo</option>
+                                <option value="gastoAleatorio">Gasto Aleatório</option>
+                                <option value="gastoEmergencia">Gasto de Emergência</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="nomeGasto">
+                                Nome do Gasto
+                            </label>
+                            <input
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                id="nomeGasto" type="text" placeholder="Digite o nome do gasto">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="valorGasto">
+                                Valor do Gasto
+                            </label>
+                            <input
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                id="valorGasto" type="number" placeholder="Digite o valor do gasto">
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <button id="cadastrar"
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                type="button">
+                                Cadastrar
+                            </button>
+                            <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+                                href="bemvindo.html">Pagina Inicial</a>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="nomeGasto">
-                    Nome do Gasto
-                </label>
-                <input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="nomeGasto" type="text" placeholder="Digite o nome do gasto">
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="valorGasto">
-                    Valor do Gasto
-                </label>
-                <input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="valorGasto" type="number" placeholder="Digite o valor do gasto">
-            </div>
-            <div class="flex items-center justify-between">
-                <button id="cadastrar"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    type="button">
-                    Cadastrar
-                </button>
-            </div>
-        </form>
+        </div>
     </div>
+    </body>
 
     <!-- Adicionando o JavaScript -->
     <script>
@@ -117,6 +153,6 @@
         // Adiciona um listener para o botão de cadastrar
         document.getElementById('cadastrar').addEventListener('click', cadastrarGasto);
     </script>
-</body>
+
 
 </html>

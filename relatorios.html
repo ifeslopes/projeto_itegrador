@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Relatórios</title>
+    <!-- Adicionando o CSS do Tailwind -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Estilos adicionais */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f3f4f6;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .container {
+            max-width: 405px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+            background-color: #4a5568;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .chart-container {
+            margin-bottom: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .chart-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .chart-description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1>Relatório de Gastos</h1>
+        </div>
+
+        <div class="chart-container">
+            <h2 class="chart-title">Gráfico de Pizza</h2>
+            <p class="chart-description">Gastos divididos por tipo</p>
+            <canvas id="pieChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <h2 class="chart-title">Gráfico de Barras</h2>
+            <p class="chart-description">Total de gastos por tipo</p>
+            <canvas id="barChart"></canvas>
+        </div>
+        <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="bemvindo.html">
+            Voltar</a>
+    </div>
+
+        <!-- Adicionando a biblioteca Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            // Recuperando os dados do localStorage
+            var listaGastos = JSON.parse(localStorage.getItem('listaGastos'));
+
+            // Filtrando os gastos por tipo
+            var gastosFixos = listaGastos.filter(function (gasto) {
+                return gasto.tipo === 'gastoFixo';
+            });
+            var gastosAleatorios = listaGastos.filter(function (gasto) {
+                return gasto.tipo === 'gastoAleatorio';
+            });
+            var gastosEmergencias = listaGastos.filter(function (gasto) {
+                return gasto.tipo === 'gastoEmergencia';
+            });
+
+            // Criando o gráfico de pizza
+            var pieChart = new Chart(document.getElementById('pieChart'), {
+                type: 'pie',
+                data: {
+                    labels: ['Gastos Fixos', 'Gastos Aleatórios', 'Gastos de Emergência'],
+                    datasets: [{
+                        data: [gastosFixos.length, gastosAleatorios.length, gastosEmergencias.length],
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                    }]
+                }
+            });
+
+            // Criando o gráfico de barras
+            var barChart = new Chart(document.getElementById('barChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Gastos Fixos', 'Gastos Aleatórios', 'Gastos de Emergência'],
+                    datasets: [{
+                        data: [calcularTotalGastos(gastosFixos), calcularTotalGastos(gastosAleatorios), calcularTotalGastos(gastosEmergencias)],
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Função auxiliar para calcular o total dos gastos
+            function calcularTotalGastos(gastos) {
+                var total = 0;
+                gastos.forEach(function (gasto) {
+                    total += gasto.valor;
+                });
+                return total;
+            }
+        </script>
+</html>
