@@ -20,14 +20,20 @@ O projeto foi dividido em duas etapas:
 O aplicativo oferece as seguintes funcionalidades:
 
 - Pagina de Login:  você clica em Novo Usuário.
- ![](img/pageLogin.png)
+ 
+- ![](img/pageLogin.png)
 - Cadastro: Os usuários podem se cadastrar fornecendo seu nome, e-mail e senha, clique em (Faça login).
- ![](img/Cadastraimg.png)
+ 
+- ![](img/Cadastraimg.png)
 - Registro de Gastos: Os usuários podem inserir e acompanhar seus gastos ao longo do mês.
+
 ![](img/Telaprincipalimg.png)
+
 ![](img/Cadastro degastoimg.png)
 - Geração de Relatórios: O aplicativo gera relatórios detalhados, apresentando gráficos e barras para visualizar os diferentes tipos de gastos .
+
 ![](img/valoraddimg.png)
+
 ![](img/Relatorioimg.png)
 ## Contribuição
 
